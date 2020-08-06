@@ -5,6 +5,10 @@
   "repository": "git@github.com:sasaken555/blog-post.git",
   "author": "Ponzmild <accelerk@gmail.com>",
   "license": "MIT",
+  "private": true,
+  "scripts": {
+    "lint": "textlint --fix posts/*.md"
+  },
   "devDependencies": {
     "textlint": "^11.7.6",
     "textlint-rule-preset-ja-technical-writing": "^4.0.1",

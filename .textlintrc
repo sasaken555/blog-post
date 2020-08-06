@@ -1,0 +1,9 @@
+{
+  "filters": {},
+  "rules": {
+    "preset-ja-technical-writing": true,
+    "prh": {
+      "rulePaths" :["./prh-rules/WEB_DB_PRESS.yml"]
+    }
+  }
+}
