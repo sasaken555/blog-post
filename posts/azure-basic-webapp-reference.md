@@ -1,5 +1,5 @@
 GWに[Microsoft Learn](https://docs.microsoft.com/ja-jp/learn/)を使ってMicrosoft Azureを触っていました。
-Azure面白いですね。
+Azureおもしろいですね。
 今回はリファレンス・アーキテクチャの [Azure で基本的な Web アプリケーションを実行する](https://docs.microsoft.com/ja-jp/azure/architecture/reference-architectures/app-service-web-app/basic-web-app) を自分で推奨・考慮事項を実装したときに参考にしたリンク集です。
 後で何回もググりそうだったので覚え書きです。
 
@@ -18,7 +18,7 @@ https://docs.microsoft.com/ja-jp/azure/architecture/reference-architectures/app-
     * リソースのデプロイのプロビジョニングの自動化する
     * アプリケーションのビルド・デプロイの自動化 (CI CD)
     * デプロイスロットを使って安全なデプロイ
-    * 構成情報はアプリ構成に記述してアプリソースに記述しない
+    * 構成情報はアプリケーション構成に記述してアプリケーションソースに記述しない
     * 診断・監視設定を有効にする
 * セキュリティ
     * ネットワークレベルのアクセス制御 (IPアドレス)
@@ -69,7 +69,7 @@ https://docs.microsoft.com/ja-jp/azure/architecture/reference-architectures/app-
 
 ---
 
-リファレンス・アーキテクチャを1つみるだけでも面白いですね。
-今後も他のクラウドと比較しながら深掘りしてみたいです。
+リファレンス・アーキテクチャを1つみるだけでもおもしろいですね。
+今後もほかのクラウドと比較しながら深掘りしてみたいです。
 
 以上。

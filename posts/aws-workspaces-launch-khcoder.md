@@ -1,4 +1,4 @@
-テキスト分析で使用するKH CoderのインストーラーがWindows版しかなかったので、
+テキスト分析で使用するKH CoderのインストーラがWindows版しかなかったので、
 AWSの仮想デスクトップサービスであるAmazon WorkSpacesでインストール、チュートリアルまでやってみた時の備忘録です。
 
 https://aws.amazon.com/jp/workspaces
@@ -18,20 +18,20 @@ Amazon WorkSpacesはドキュメントに記載されている通り、WorkSpace
 高速セットアップでは、上記のセットアップとWorkSpaceの作成を一手に実行してくれます。
 自分がやったときはセットアップ開始から約20分でWorkSpaceが起動して招待メールが届きました。
 
-また、Windows仮想マシンでKH Coderを動かすことが目的なので、
+また、Windows仮想マシンでKH Coderを動かすことが目的ですので、
 OS / CPU / メモリといったスペックを選択するバンドルには `Standard with Windows 10 ` を選択します。
 
 <figure class="figure-image figure-image-fotolife" title="Bundleには Standard with WIndows 10を選択">[f:id:accelerk:20200510170344p:plain:alt=Bundleには Standard with WIndows 10を選択]<figcaption>Bundleには Standard with WIndows 10を選択</figcaption></figure>
 
-その他のWorkSpaceのセットアップ方法は以下の記事が詳しいです。
+そのほかのWorkSpaceのセットアップ方法は以下の記事が詳しいです。
 
 https://qiita.com/yamachan360/items/454c8ad9d2ce6127ba19
 
 
 ## 仮想デスクトップにログイン
 
-起動済みのWorkSpace Windows仮想マシンにログインするときはWorkSpacesクライアント、またはWebブラウザからアクセスします。
-(WebブラウザはWindows仮想マシンのみ、Linux仮想マシンは不可)
+起動済みのWorkSpace Windows仮想マシンにログインするときはWorkSpacesクライアント、またはブラウザからアクセスします。
+(ブラウザはWindows仮想マシンのみ、Linux仮想マシンは不可)
 私は普段からmacOSを利用していたのでWorkSpacesクライアントを以下のサイトからダウンロードしました。
 
 https://clients.amazonworkspaces.com
@@ -48,13 +48,13 @@ https://clients.amazonworkspaces.com
 
 ## KH Coderをインストール
 
-[KH Coderのダウンロードページ](https://khcoder.net/dl3.html)からインストーラーをダウンロードして起動します。
-インストーラーの指示に従えばOKです。インストール後はそのまま起動できるかと思いきや...できません。
+[KH Coderのダウンロードページ](https://khcoder.net/dl3.html)からインストーラをダウンロードして起動します。
+インストーラの指示に従えばOKです。インストール後はそのまま起動できるかと思いきや...できません。
 インストール直後にKH Coderを起動すると必ずDLLが足りないというエラーメッセージが出ます。
 
 `MSVCP100.dllが見つからなかったため、アプリケーションを開始できませんでした`
 
-これは既知の問題なので、FAQに沿って必要なコンポーネントをダウンロードします。
+これは既知の問題ですので、FAQに沿って必要なコンポーネントをダウンロードします。
 https://khcoder.net/FAQ.html#dll_not_found
 
 コンポーネントダウンロード後はWorkSpaceを再起動する必要があるので、AWS ConsoleからWorkSpaceを再起動します。
@@ -66,7 +66,7 @@ https://khcoder.net/FAQ.html#dll_not_found
 ## KH Coderの起動と操作
 
 上記のインストールが完了したらKH Coderを起動できます。
-[KH Coderのチュートリアル](https://www.slideshare.net/khcoder/kh-coder-3-231585670)に沿って夏目漱石の『こころ』のテキストから共起ネットワークを作成できました。パフォーマンスや描画速度、キーボードインプットのラグは全く気にならなかったので使いやすいです。
+[KH Coderのチュートリアル](https://www.slideshare.net/khcoder/kh-coder-3-231585670)に沿って夏目漱石の『こゝろ』のテキストから共起ネットワークを作成できました。パフォーマンスや描画速度、キーボードインプットのラグはまったく気にならなかったので使いやすいです。
 
 <figure class="figure-image figure-image-fotolife" title="KH Coderの共起ネットワークを描画する">[f:id:accelerk:20200510173436p:plain:alt=KH Coderの共起ネットワークを描画する]<figcaption>KH Coderの共起ネットワークを描画する</figcaption></figure>
 
@@ -74,7 +74,7 @@ https://khcoder.net/FAQ.html#dll_not_found
 
 Windowsでしか使えないソフトウェアは、Amazon WorkSpacesの仮想デスクトップを使えば自分のPCを汚さず簡単に実行できそうですね。
 Amazon WorkSpacesと同じ仮想デスクトップサービスにMicrosoft AzureのWindows Virtual Desktopというサービスがあります。
-まだ調べきれていないのですがこちらも面白そうなので、何かの折にそっちと比較してみます。
+まだ調べきれていないのですがこちらも興味深いので、何かの折にそっちと比較してみます。
 
 https://azure.microsoft.com/ja-jp/services/virtual-desktop
 

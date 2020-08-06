@@ -5,7 +5,7 @@
 
 ## 遭遇した事象
 
-AngularからWebSocketサーバーと通信する場合は、[RxJSの`rxjs/webSocket`](https://rxjs-dev.firebaseapp.com/api/webSocket/webSocket)を使用すれば簡単に実現できます。例えばWebSocketでメッセージを受信するServiceクラスは以下のように数行で書けます。便利！
+AngularからWebSocketサーバと通信する場合は、[RxJSの`rxjs/webSocket`](https://rxjs-dev.firebaseapp.com/api/webSocket/webSocket)を使用すれば簡単に実現できます。たとえばWebSocketでメッセージを受信するServiceクラスは以下のように数行で書けます。便利！
 
 **サンプルコード**
 ```typescript
@@ -25,13 +25,13 @@ export class MessageService {
 }
 ```
 
-しかし、サーバーからシンプルなテキスト(例えば "first message"とか)を受け取るとパースできない...これが今回解決したいことです。
+しかし、サーバからシンプルなテキスト(たとえば "first message"とか)を受け取るとパースできない...これが今回解決したいことです。
 
 `SyntaxError: Unexpected token i in JSON at position 1`
 
 ## 解決策
 
-`rxjs/webSocket`のオプションを定義する [WebSocketSubjectConfig](https://rxjs-dev.firebaseapp.com/api/webSocket/WebSocketSubjectConfig)を参照すると、ちゃんと書いてありました。例えば `deserializer` には以下のような説明があります。(サンプルもあった)
+`rxjs/webSocket`のオプションを定義する [WebSocketSubjectConfig](https://rxjs-dev.firebaseapp.com/api/webSocket/WebSocketSubjectConfig)を参照すると、ちゃんと書いてありました。たとえば `deserializer` には以下のような説明があります。(サンプルもあった)
 
 > deserializer: A deserializer used for messages arriving on the socket from the server. Defaults to JSON.parse.
 > サーバーから受信するメッセージをデシリアライズする時に使われる関数。デフォルトは JSON.parse です。
@@ -60,10 +60,10 @@ export class MessageService {
 ## 参考
 
 サンプル実装をGitHubに置きました。
-[https://github.com/sasaken555/angular-websocket-sample:embed:cite]
+https://github.com/sasaken555/angular-Websocket-sample
 
 
 ---
-困ったら公式ドキュメントを読もうな...
+困ったら公式ドキュメントを読もうな。
 
 以上。

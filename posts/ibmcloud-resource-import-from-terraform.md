@@ -1,13 +1,13 @@
 AWSの既存リソースをTerraformの管理下に入れる記事を見たので、IBM Cloudでも同じことできるだろうと手を動かした時のメモです。
 
 **偉大なる元記事**
-[https://dev.classmethod.jp/articles/aws-with-terraform/:embed:cite]
+https://dev.classmethod.jp/articles/aws-with-terraform
 
 
 ## TL;DR
 
 * terraform importコマンドを使えば、IBM Cloud上のリソース作成状況を `terraform.tfstate` ファイルに落とせる。
-* tfstateを基にリソース定義のtfファイルを書けばOK。
+* tfstateをもとにリソース定義のtfファイルを書けばOK。
 
 
 ## 検証環境
@@ -103,7 +103,7 @@ $ terraform import ibm_resource_instance.db_cloudant crn:v1:bluemix:public:cloud
 
 この状態でまずは `terraform plan` を打ちます。
 `Error: Missing required argument` と必須項目チェックエラーが出力されますね？
-チェックエラーとなった全ての値を tfstate を参考にしながら埋めていきます。
+チェックエラーとなったすべての値を tfstate を参考にしながら埋めていきます。
 `terraform plan` で必須チェックエラーが出なくなるまで定義を埋めると以下のようなtfファイルになるはず。
 
 ```
@@ -123,12 +123,12 @@ resource "ibm_resource_instance" "db_cloudant" {
 IBM Cloudのリソースを管理するときに作成できるリソースは2種類に大別されます。
 個別設定可能なリソースと、Resource Management resourceという区分で作成できるリソースの2種類です。
 
-前者はAPI GatewayやCloudFoundryアプリ、Classic Infrastructureは専用のリソース定義が用意されているのでこれらを使用すればリソースを簡単に作成できます。  
-後者は個別定義されていない(ほぼ)全てのリソースを作成するためのリソース定義です。
+前者はAPI GatewayやCloudFoundryアプリケーション、Classic Infrastructureは専用のリソース定義が用意されているのでこれらを使用すればリソースを簡単に作成できます。  
+後者は個別定義されていない(ほぼ)すべてのリソースを作成するためのリソース定義です。
 NoSQLのCloudantや認証・認可のSaasのAppIDなどは、こちらに分類されます。 ドキュメント上の `ibm_resource_instance` で作成できないか確認してみましょう。細かい設定は `parameters` パラメータで指定します。
 
 1点注意すべき点として、Terraform未対応のリソースがあります。
-例えば、IBM Cloud FunctionsはIAMベースの名前空間に存在する関数やトリガーを管理できません。(ただし、CloudFoundryベースはサポートされている)  
+たとえば、IBM Cloud FunctionsはIAMベースの名前空間に存在する関数やトリガを管理できません。(ただし、CloudFoundryベースはサポートされている)  
 Terraform採用前にどのリソースが管理可能なのかドキュメントの確認をお勧めします。  
 --> [Index of Terraform resources and data sources](https://cloud.ibm.com/docs/terraform?topic=terraform-index-of-terraform-resources-and-data-sources)
 
@@ -159,7 +159,7 @@ resource "ibm_resource_key" "key_db_cloudant_tf" {
 
 ---
 
-既存リソースを全て自動でとはいかないものの、Terraform管理下におくことができました。
+既存リソースをすべて自動でとはいかないものの、Terraform管理下におくことができました。
 ちなみにAnsibleにもIBM Cloudのリソースを管理するCollectionがあるようです。
 次はAnsibleの学習がてらそちらを触ってみようかな。
 
