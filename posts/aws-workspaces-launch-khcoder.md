@@ -1,3 +1,5 @@
+# Amazon WorkSpacesのWindows仮想マシンでKH Coderを動かしてテキスト分析する
+
 テキスト分析で使用するKH CoderのインストーラがWindows版しかなかったので、
 AWSの仮想デスクトップサービスであるAmazon WorkSpacesでインストール、チュートリアルまでやってみた時の備忘録です。
 

@@ -1,3 +1,5 @@
+# RxJSのWebSocket通信ではメッセージにJSONを期待している
+
 ## TL; DR
 
 * RxJSの `rxjs/webSocket` はメッセージ送受信時にデフォルトで `JSON.parse` / `JSON.stringify` の変換を行う。

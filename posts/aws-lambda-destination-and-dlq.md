@@ -1,3 +1,5 @@
+# AWS Lambdaの処理失敗時に「送信先」と「DLQ」で連携するデータの違い
+
 先日[Serverless Meetup Japan Virtual #0](https://serverless.connpass.com/event/179575/)に参加した時に、
 AWS Lambdaの処理失敗時にDLQとは違う送信先を指定できると聞いたので連携データの違いは何か調べました。
 

@@ -1,3 +1,5 @@
+# Azureの基本的なリファレンス・アーキテクチャ実装のためのリンク集
+
 GWに[Microsoft Learn](https://docs.microsoft.com/ja-jp/learn/)を使ってMicrosoft Azureを触っていました。
 Azureおもしろいですね。
 今回はリファレンス・アーキテクチャの [Azure で基本的な Web アプリケーションを実行する](https://docs.microsoft.com/ja-jp/azure/architecture/reference-architectures/app-service-web-app/basic-web-app) を自分で推奨・考慮事項を実装したときに参考にしたリンク集です。
