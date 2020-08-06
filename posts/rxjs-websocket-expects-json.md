@@ -2,12 +2,12 @@
 
 ## TL; DR
 
-* RxJSの `rxjs/webSocket` はメッセージ送受信時にデフォルトで `JSON.parse` / `JSON.stringify` の変換を行う。
+* RxJSの `rxjs/webSocket` はメッセージ送受信時にデフォルトで `JSON.parse` / `JSON.stringify` を実行します。
 * 単純なテキストを受信する場合は、オプションの `serializer`または`deserializer`を指定すれば良い。
 
 ## 遭遇した事象
 
-AngularからWebSocketサーバと通信する場合は、[RxJSの`rxjs/webSocket`](https://rxjs-dev.firebaseapp.com/api/webSocket/webSocket)を使用すれば簡単に実現できます。たとえばWebSocketでメッセージを受信するServiceクラスは以下のように数行で書けます。便利！
+AngularからWebSocketサーバと通信する場合は、[RxJSの`rxjs/webSocket`](https://rxjs-dev.firebaseapp.com/api/webSocket/webSocket)を使用すれば簡単に実現できます。たとえばWebSocketでメッセージを受信するServiceクラスは以下のように数行で書けます。便利ですね。
 
 **サンプルコード**
 ```typescript

@@ -1,11 +1,10 @@
 # AWS Lambdaの処理失敗時に「送信先」と「DLQ」で連携するデータの違い
 
-先日[Serverless Meetup Japan Virtual #0](https://serverless.connpass.com/event/179575/)に参加した時に、
-AWS Lambdaの処理失敗時にDLQとは違う送信先を指定できると聞いたので連携データの違いは何か調べました。
+先日[Serverless Meetup Japan Virtual #0](https://serverless.connpass.com/event/179575/)に参加してきました。その時にAWS Lambdaの処理失敗時はDLQとは違う送信先を指定できると聞いたので、連携データの違いは何か調べました。
 
 ## TL; DR
 
-* Lambdaを非同期で呼び出す場合、処理失敗した後に後続にデータを渡す方法は「通知先(Destination)」と「DLQ (Dead Letter Queue)」の2つ。
+* Lambdaを非同期で呼び出す場合、処理失敗した後にデータを渡す方法は「通知先(Destination)」と「DLQ (Dead Letter Queue)」の2つ。
 * 通知先はリクエスト・レスポンス、関数などの詳細なデータが連携される。
 * DLQはリクエストの内容のみ連携される。
 
@@ -15,7 +14,7 @@ AWS Lambdaの処理失敗時にDLQとは違う送信先を指定できると聞�
 AWS Lambdaは非同期呼び出しで処理成功・失敗時にデータを連携するサービスを指定できます。
 この連携先のサービスを「送信先(Destination)」と呼んでいます。送信先がサポートされたのは2019/11と割と最近です。
 
-[https://aws.amazon.com/jp/about-aws/whats-new/2019/11/aws-lambda-supports-destinations-for-asynchronous-invocations/:embed:cite]
+https://aws.amazon.com/jp/about-aws/whats-new/2019/11/aws-lambda-supports-destinations-for-asynchronous-invocations
 
 送信先としてAmazon SQS、Amazon SNS、Amazon EventBridge、別のAWS Lambda関数の4種類のサービスを選択可能です。
 また、処理成功と処理失敗で送信先に別のサービスを選択可能というところが柔軟ですね。

@@ -1,6 +1,6 @@
 # Amazon WorkSpacesのWindows仮想マシンでKH Coderを動かしてテキスト分析する
 
-テキスト分析で使用するKH CoderのインストーラがWindows版しかなかったので、
+テキスト分析で使用するKH CoderのインストーラがWindows版しかありません。
 AWSの仮想デスクトップサービスであるAmazon WorkSpacesでインストール、チュートリアルまでやってみた時の備忘録です。
 
 https://aws.amazon.com/jp/workspaces
@@ -20,7 +20,7 @@ Amazon WorkSpacesはドキュメントに記載されている通り、WorkSpace
 高速セットアップでは、上記のセットアップとWorkSpaceの作成を一手に実行してくれます。
 自分がやったときはセットアップ開始から約20分でWorkSpaceが起動して招待メールが届きました。
 
-また、Windows仮想マシンでKH Coderを動かすことが目的ですので、
+また、Windows仮想マシンでKH Coderを動かすことが目的ですので、程よいスペックが欲しいところです。
 OS / CPU / メモリといったスペックを選択するバンドルには `Standard with Windows 10 ` を選択します。
 
 <figure class="figure-image figure-image-fotolife" title="Bundleには Standard with WIndows 10を選択">[f:id:accelerk:20200510170344p:plain:alt=Bundleには Standard with WIndows 10を選択]<figcaption>Bundleには Standard with WIndows 10を選択</figcaption></figure>
@@ -32,8 +32,7 @@ https://qiita.com/yamachan360/items/454c8ad9d2ce6127ba19
 
 ## 仮想デスクトップにログイン
 
-起動済みのWorkSpace Windows仮想マシンにログインするときはWorkSpacesクライアント、またはブラウザからアクセスします。
-(ブラウザはWindows仮想マシンのみ、Linux仮想マシンは不可)
+起動済みのWorkSpace Windows仮想マシンにログインするときはWorkSpacesクライアント、またはブラウザからアクセスします。ちなみにブラウザはWindows仮想マシンのみ、Linux仮想マシンは不可です。
 私は普段からmacOSを利用していたのでWorkSpacesクライアントを以下のサイトからダウンロードしました。
 
 https://clients.amazonworkspaces.com

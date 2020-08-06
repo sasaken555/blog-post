@@ -29,7 +29,7 @@ https://dev.classmethod.jp/articles/aws-with-terraform
 
 ### (1) ダミーのtfファイルを作成する
 
-管理下におく前に、ダミーのリソース定義として中身が空の定義を作成します。
+最初に中身が空のリソース定義を作成します。
 
 ```
 # Provider定義
@@ -104,7 +104,7 @@ $ terraform import ibm_resource_instance.db_cloudant crn:v1:bluemix:public:cloud
 ```
 
 この状態でまずは `terraform plan` を打ちます。
-`Error: Missing required argument` と必須項目チェックエラーが出力されますね？
+`Error: Missing required argument` と必須項目チェックエラーが出力されます。
 チェックエラーとなったすべての値を tfstate を参考にしながら埋めていきます。
 `terraform plan` で必須チェックエラーが出なくなるまで定義を埋めると以下のようなtfファイルになるはず。
 
@@ -125,7 +125,7 @@ resource "ibm_resource_instance" "db_cloudant" {
 IBM Cloudのリソースを管理するときに作成できるリソースは2種類に大別されます。
 個別設定可能なリソースと、Resource Management resourceという区分で作成できるリソースの2種類です。
 
-前者はAPI GatewayやCloudFoundryアプリケーション、Classic Infrastructureは専用のリソース定義が用意されているのでこれらを使用すればリソースを簡単に作成できます。  
+前者はAPI GatewayやCloudFoundryアプリケーション、Classic Infrastructureが該当します。これらは専用のリソース定義が用意されているのでこれらを使用すればリソースを簡単に作成できます。  
 後者は個別定義されていない(ほぼ)すべてのリソースを作成するためのリソース定義です。
 NoSQLのCloudantや認証・認可のSaasのAppIDなどは、こちらに分類されます。 ドキュメント上の `ibm_resource_instance` で作成できないか確認してみましょう。細かい設定は `parameters` パラメータで指定します。
 
@@ -138,7 +138,7 @@ Terraform採用前にどのリソースが管理可能なのかドキュメン�
 ## terraform importでカバーできないこと
 
 また、Terraformでリソース管理できても `terraform import` だけでは完全に管理下に置けない場合があります。
-最初からTerraformでIBM Cloudのリソースを作成した場合と、既存リソースを `terraform import` でTerraform管理下に置いた場合の2つのtfファイルを比較すると以下のような注意点がありました。
+最初からTerraformでIBM Cloudのリソースを作成した場合と、既存リソースを `terraform import` した場合ではtfファイルが異なります。2つの場合を比較すると以下のような注意点がありました。
 
 * リソースが所属するリソースグループの指定が必要
   * terraform importした状態だと、 `resource_group_id` が空になります。
@@ -148,7 +148,7 @@ Terraform採用前にどのリソースが管理可能なのかドキュメン�
 * 認証情報 (Service Key) が紐づくリソースのID指定が必要
   * terraform importした状態だと、 `resource_instance_id` が空になる。
   * この状態でも `terraform plan` は差分なしと判定される。
-  * 「どのリソースの認証情報なのか？」という紐付けがないため、このままではサービス再作成時に元に戻せないことになる。
+  * 認証情報の紐付けがないため、このままではサービス再作成時に復元できない。
   * 回避策として、tfstateファイルに resource_instance_idを追加し、以下のようにtfファイルにも `resource_instance_id` を指定する。
 
 ```

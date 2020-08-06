@@ -5,8 +5,8 @@ Kafka Tutorialsを進めていたときに、タイトル通りMavenでAvroの�
 
 https://kafka-tutorials.confluent.io/
 
-Avroの公式サイトにはMavenのプラグインでAvroのスキーマからJavaのコードを生成する方法が乗っていますが、
-Mavenを使う並ば `mvn compile` を実行するようにガイドされています。
+Avroの公式サイトにはMavenのプラグインでAvroのスキーマからJavaのコードを生成する方法が載っています。
+Mavenを使う場合、 `mvn compile` を実行するようにガイドされています。
 
 https://avro.apache.org/docs/current/gettingstartedjava.html
 
@@ -19,7 +19,7 @@ https://avro.apache.org/docs/current/gettingstartedjava.html
 ```
 
 最終的にはStackoverflowの以下のissueにたどり着き、 `mvn avro:schema` を実行すればできると。
-よくよく考えたらgoalsに書いているんだから当然でした笑
+よく考えたらgoalsに書いているんだから当然でした。
 
 https://stackoverflow.com/questions/31921464/unable-to-invoke-avro-maven-plugin
 
@@ -29,4 +29,4 @@ https://stackoverflow.com/questions/31921464/unable-to-invoke-avro-maven-plugin
 
 ---
 
-しかし、なぜ mvn compileで通らないのかは理解しなければ。。。
+しかし、なぜ mvn compileで通らないのかは理解しなければ。
