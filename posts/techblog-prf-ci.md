@@ -7,7 +7,7 @@
 
 ## 文章校正で解決したいこと
 
-まず自分なりに「なぜ文章校正のCIを作りたかったのか」をまとめます。
+まず自分なりに「なぜ文章校正をCIで実行させたかったか」をまとめます。
 ブログや技術同人誌のような外向けに文章の校正作業は、軽微な修正が繰り返して面倒です。
 たとえば以下の作業が面倒な校正作業です。
 
@@ -67,18 +67,36 @@ textlint実行の下準備は以下3ステップになります。
 
 ## GitHub Actionsにtextlintを組み込む
 
-* GitHub Actionsのジョブを定義します。
+textlintも準備できたので、校正CIを構築します。
+CIツールは実プロジェクトですとクラウドのCIサービスを使うケースが多いですが、今回はブログ記事をGitHubに集約していたのでGitHub Actionsを採用します。
+
+GitHub Actionsを使用して文章校正CIは以下の流れで実行させます。
+
 * Markdownで文章を書きます。
 * 編集が終わったらGitリポジトリにcommit&pushします。
-* リポジトリへpushされると、GitHub Actionsのジョブがキックされます。
-* ルール違反があればエラーで落ちます。
+* リポジトリへpushされると、GitHub Actionsのワークフローが起動してtextlintを実行します。
+* 文章にルール違反があればエラーで落ちます。
+
+GitHub ActionsのワークフローはYAMLで定義します。
+書き方はドキュメントや書籍が出ていますのでそちらを参考にしてください。一例として[私が作成したCIワークフローの定義](https://github.com/sasaken555/blog-post/blob/master/.github/workflows/lint_markdowns.yml)がGitHubに上がっています。
+
+ワークフローの定義をコミットした状態でリポジトリにソースコードをプッシュすると、ワークフローが実行されます。
+
+試しに校正ルール違反の文章をプッシュした時のワークフロー実行結果は以下の通りです。
 
 ※ここに実行結果の画像を貼り付けます。
+
+無事検出されました。コミットのページを見ると成功はチェック、失敗はバツがついているので分かりやすいですね。
+
+
+## まとめ
+
+文章校正はCIで快適にできる。
 
 
 ## 参考
 
-* 文章校まさに使えるツール
+* 文章校正で使えるツール
   * https://github.com/textlint/textlint
   * https://github.com/textlint-ja/textlint-rule-preset-ja-technical-writing
   * https://github.com/prh/prh
