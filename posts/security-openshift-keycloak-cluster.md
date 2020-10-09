@@ -7,13 +7,16 @@
 ## TL; DR
 
 * 外部公開用のServiceを使ってDNS_PINGでクラスタを作成しても、Podごとにクラスタができてしまう。
-* 外部公開用のServiceとは別に、クラスタ内のPod間で疎通するためのHeadless Serviceを作成しよう。
+* 外部公開用のServiceとは別に、クラスタ内のPod間で疎通するためのHeadless Serviceを作成しましょう。
 
 
 ## 動作確認
 
-CodeReady Container (crc: 1.16.0+bf72d3a, OpenShift: 4.5.9) で動作確認を行いました。
+CodeReady Containerで動作確認を行いました。
 これ以外の環境では別途確認をお勧めします。
+
+* crc: 1.16.0+bf72d3a
+* OpenShift: 4.5.9
 
 
 ## サンプルを流用してクラスタを作成する...しかしできない
@@ -22,15 +25,20 @@ CodeReady Container (crc: 1.16.0+bf72d3a, OpenShift: 4.5.9) で動作確認を�
 
 ### Pod1つで動かす
 
-* サンプル通りまずはPodを1つだけ立てるパターンを確認します。
-* ログを確認するとクラスタを作成しています。最初に立てるPodなのでほかのクラスタのメンバーが見つからないというメッセージが出力されています。
+サンプル通りまずはPodを1つだけ立てるパターンを確認します。
+上記のTemplateを `oc process` コマンドで適用して各種リソースを作成します。
 
 ```
 $ oc get po -w
 NAME                     READY   STATUS      RESTARTS   AGE
 keycloak-demo-1-deploy   0/1     Completed   0          5m26s
 keycloak-demo-1-n8gpd    1/1     Running     0          5m23s
+```
 
+ここで作成されたPodのログを確認するとクラスタを作成してることがわかります。
+最初に立てるPodなのでほかのクラスタのメンバーが見つからないというメッセージが出力されます。
+
+```
 $ oc logs keycloak-demo-1-n8gpd -f
 (...中略...)
 07:26:27,828 INFO  [org.jgroups.protocols.pbcast.GMS] (ServerService Thread Pool -- 60) keycloak-demo-1-n8gpd: no members discovered after 3321 ms: creating cluster as coordinator
@@ -38,9 +46,8 @@ $ oc logs keycloak-demo-1-n8gpd -f
 
 ### Podを2つ以上で動かす
 
-* 上記のTemplateで作成したDeploymentConfigをスケールさせてPod2つでクラスタは作成できるでしょうか。
-* `oc scale` コマンドで追加のPodを立ち上げます。
-* Podは正常に立ち上がりましたが、ログを見ると1つ目のPodと同じように新しくクラスタを作成しています。
+上記のTemplateで同じPodをもう一つ作ると、同じクラスタに2つのPodが含まれると予想できます。
+実際に`oc scale` コマンドでDeploymentConfigを2つ目のPodを立ち上げます。
 
 ```
 $ oc scale dc keycloak-demo --replicas=2
@@ -57,16 +64,18 @@ $ oc logs keycloak-demo-1-j6p5h -f
 07:30:35,764 INFO  [org.jgroups.protocols.pbcast.GMS] (ServerService Thread Pool -- 60) keycloak-demo-1-j6p5h: no members discovered after 3322 ms: creating cluster as coordinator
 ```
 
-* 2つのPodが1つのクラスタのメンバーになることを期待していますので、これは期待を裏切っています。
+Podは正常に立ち上がりましたが、上記のログを見ると1つ目のPodと同じように新しくクラスタを作成しています。
+2つのPodが1つのクラスタのメンバーになることを期待していますので、期待通りの結果とはなりませんでした。
 
 
 ## 解決方法
 
 ### Headless Serviceを作成
 
-* Headless Serviceを作成し、以下のようにKeycloakのPodではHeadless Serviceに対してDNSクエリを投げるように設定すれば解決できます。
-* この設定はKeycloakではなく、クラスタを動かすしくみである JGroup に説明がありました。
-* JGroupのドキュメントには、KubernetesやOpenShiftでクラスタを構築するにはHeadless Serviceが必要との記載がある。
+結論としてはHeadless Serviceを作成し、以下のようにKeycloakのPodではHeadless Serviceに対してDNSクエリを投げるように設定すれば解決できます。
+
+この設定はKeycloakではなく、クラスタを動かすしくみである JGroup に説明がありました。
+JGroupのドキュメントには、KubernetesやOpenShiftでクラスタを構築するにはHeadless Serviceが必要との記載があります。
 
 ```yaml
 - apiVersion: v1
@@ -111,23 +120,26 @@ $ oc logs keycloak-demo-1-j6p5h -f
               image: quay.io/keycloak/keycloak:11.0.2
 ```
 
-* なお、PROTOCOLの欄には何も変更を加えていません。
-* [JGroupのDNS_PINGで使用されるプロトコルがUDPと記載されている記事](https://qiita.com/t-mogi/items/ba38a614c1637a8aef93)もあるのですが、現在はTCPがデフォルトになっているためここであらためて設定する必要はありません。**(要出典)**
+なお、上記の設定では環境変数 `JGROUPS_DISCOVERY_PROTOCOL` に何も変更を加えていません。
+[JGroupのDNS_PINGで使用されるプロトコルがUDPと記載されている記事](https://qiita.com/t-mogi/items/ba38a614c1637a8aef93)もあるのですが、現在はTCPがデフォルトになっているためここであらためて設定する必要はありません。
 
+> JGROUPS_TRANSPORT_STACK - an optional name of the transport stack to use udp or tcp are possible values. Default: tcp
+> 
+> 出典: [Reliable group communication with JGroups : 6.4.15. DNS_PING](http://www.jgroups.org/manual4/index.html#_dns_ping)
+
+
+### Podを2つ以上で動かしてクラスタを組む
+
+Headless Serviceを作成して改めてクラスタを組んでみます。
+上記の通り追記・修正したTemplateを再度適用し、Podを2つ立ててみます。
 
 ```
+# 外部疎通用とクラスタ疎通用の2つのServiceを作成する
 $ oc get svc
 NAME                      TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
 keycloak-demo             ClusterIP   172.25.250.178   <none>        8443/TCP   4s
 keycloak-demo-discovery   ClusterIP   None             <none>        8080/TCP   4s
-```
 
-### Podを2つ以上で動かしてクラスタを組む
-
-* 実際に設定してみると、ログ上でクラスタが見つかった旨のメッセージが出力されている。
-* これにて一件落着。
-
-```
 # 1つ目のPod
 $ oc logs -f keycloak-demo-1-mvrfg
 07:42:50,796 INFO  [org.jgroups.protocols.pbcast.GMS] (ServerService Thread Pool -- 60) keycloak-demo-1-mvrfg: no members discovered after 3037 ms: creating cluster as coordinator
@@ -139,6 +151,9 @@ $ oc logs -f
 07:45:02,173 INFO  [org.infinispan.CLUSTER] (MSC service thread 1-1) ISPN000078: Starting JGroups channel ejb
 07:45:02,191 INFO  [org.infinispan.CLUSTER] (MSC service thread 1-1) ISPN000094: Received new cluster view for channel ejb: [keycloak-demo-1-mvrfg|1] (2) [keycloak-demo-1-mvrfg, keycloak-demo-1-vv5jn]
 ```
+
+1つ目のPodはクラスタを新規で作成していますが、2つ目のPodは無事に既存クラスタに参加した旨のメッセージがログに出力されています。
+これにて一件落着です。
 
 ---
 
