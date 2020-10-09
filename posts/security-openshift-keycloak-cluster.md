@@ -74,9 +74,6 @@ Podは正常に立ち上がりましたが、上記のログを見ると1つ目�
 
 結論としてはHeadless Serviceを作成し、以下のようにKeycloakのPodではHeadless Serviceに対してDNSクエリを投げるように設定すれば解決できます。
 
-この設定はKeycloakではなく、クラスタを動かすしくみである JGroup に説明がありました。
-JGroupのドキュメントには、KubernetesやOpenShiftでクラスタを構築するにはHeadless Serviceが必要との記載があります。
-
 ```yaml
 - apiVersion: v1
   kind: Service
@@ -119,6 +116,9 @@ JGroupのドキュメントには、KubernetesやOpenShiftでクラスタを構�
                 #   value: "dns_query=${APPLICATION_NAME}.${NAMESPACE}.svc.cluster.local"
               image: quay.io/keycloak/keycloak:11.0.2
 ```
+
+この設定はKeycloakのクラスタを組むしくみである JGroup のドキュメントに説明がありました。  
+JGroupのドキュメントには、KubernetesやOpenShiftでクラスタを構築するにはHeadless Serviceが必要との記載があります。
 
 なお、上記の設定では環境変数 `JGROUPS_DISCOVERY_PROTOCOL` に何も変更を加えていません。
 [JGroupのDNS_PINGで使用されるプロトコルがUDPと記載されている記事](https://qiita.com/t-mogi/items/ba38a614c1637a8aef93)もあるのですが、現在はTCPがデフォルトになっているためここであらためて設定する必要はありません。
