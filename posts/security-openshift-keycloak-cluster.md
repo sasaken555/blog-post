@@ -35,7 +35,7 @@ keycloak-demo-1-deploy   0/1     Completed   0          5m26s
 keycloak-demo-1-n8gpd    1/1     Running     0          5m23s
 ```
 
-ここで作成されたPodのログを確認するとクラスタを作成してることがわかります。
+ここで作成されたPodのログを確認するとクラスタを作成していることがわかります。
 最初に立てるPodなのでほかのクラスタのメンバーが見つからないというメッセージが出力されます。
 
 ```
@@ -46,7 +46,7 @@ $ oc logs keycloak-demo-1-n8gpd -f
 
 ### Podを2つ以上で動かす
 
-上記のTemplateで同じPodをもう一つ作ると、同じクラスタに2つのPodが含まれると予想できます。
+上記のTemplateで同じPodを追加すると、同じクラスタに2つのPodが含まれると予想できます。
 実際に`oc scale` コマンドでDeploymentConfigを2つ目のPodを立ち上げます。
 
 ```
@@ -130,8 +130,8 @@ JGroupのドキュメントには、KubernetesやOpenShiftでクラスタを構�
 
 ### Podを2つ以上で動かしてクラスタを組む
 
-Headless Serviceを作成して改めてクラスタを組んでみます。
-上記の通り追記・修正したTemplateを再度適用し、Podを2つ立ててみます。
+Headless Serviceを作成してあらためてクラスタを組んでみます。
+上記の通り追記・修正したTemplateを再度適用し、Podを2つ立てみます。
 
 ```
 # 外部疎通用とクラスタ疎通用の2つのServiceを作成する
