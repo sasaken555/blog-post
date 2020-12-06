@@ -1493,7 +1493,7 @@ match-index@^1.0.1, match-index@^1.0.3:
   dependencies:
     regexp.prototype.flags "^1.1.1"
 
-md-to-pdf@^3.1.1:
+md-to-pdf@^3.1.2:
   version "3.1.2"
   resolved "https://registry.yarnpkg.com/md-to-pdf/-/md-to-pdf-3.1.2.tgz#79e19e67895d8c635fc7dba872c03b5e114d5b14"
   integrity sha512-jFE7MIiC1i4OmVRyUam2wdKoQi9LyvkaDUlNMqSuvsrXIrAEoeQyeFSLtVhA8Bqa+CDFXuDT33RGzrsKzJhT8g==
