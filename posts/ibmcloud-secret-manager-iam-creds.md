@@ -27,7 +27,8 @@ IBM CloudではユーザーまたはサービスIDに紐づくAPIキーを発行
 
 APIキーを発行する前に、Secret Managerがいったい何をしているのか簡単に説明します。
 
-Secret ManagerのIAMシークレットエンジンは、シークレット作成リクエストを受け取ると、サービスIDとAPIキーを動的に発行しています。
+Secret ManagerのIAMシークレットエンジンは、シークレット作成リクエストを受け取るとサービスIDとAPIキーを動的に発行しています。
+APIキーはサービスID、サービスIDはアクセスグループに紐付けられます。
 サービスIDの権限付与にアクセスグループを利用するので、複数のAPIキー発行時も毎回同じ最小権限を持たせることが可能になっています。
 
 ここでAPIキーに関係するエンティティのリレーションを図解します。
@@ -97,8 +98,78 @@ Secret Manager管理画面の"設定"メニューから、"IAM Secret Engine"欄
 
 ## 有効期限つきAPIキーを発行する
 
-* 発行するAPIキーのアクセスグループ作成
-* REST APIでAPIキーを発行
-* APIキーを使ってリソースを操作する
-  * [APIキーからIBM Cloud IAMトークンを発行](https://cloud.ibm.com/apidocs/secrets-manager#authentication)
-  * リソース操作APIを実行 (e.g. [今月の課金取得API](https://cloud.ibm.com/apidocs/metering-reporting))
+ここから本題です。
+本記事では、発行したAPIキーからアクセストークンを生成し、アカウントの使用量(=課金額)を取得してみます。
+
+まずSecret Managerの管理画面から"秘密"メニューを開き、APIキーを発行します。
+IAMシークレットエンジンを有効化しているので、"IAM credentials"を選択できるようになっています。
+"IAM credentials"を選択し、APIキーの項目を入力します。
+
+入力欄からアカウントの使用量を取得する権限を持ったアクセスグループを指定します。以下のようにBillingサービスに"Viewer"役割を持ったアクセス・ポリシーを付け足アクセスグループを事前に作成しておきます。
+
+また、有効期限を設定したいので最下部の"Lease Duration"欄に有効期間を設定します。今回は10分だけ有効にします。
+
+"Add"ボタンを押下すれば、これでAPIキー発行は完了です。
+シークレット一覧に表示され、詳細表示するとUUIDが割り振られていることがわかります。
+
+## APIキーを使用する
+
+APIキー自体はSecret Managerに保管されているので、使用時はSecret ManagerのREST APIを実行して取り出します。
+
+Secret ManagerのREST APIは組込みSwagger UIから実行可能です。それではSwagger UIからシークレット取得APIを実行してAPIキーを取り出しましょう。
+Swagger UIは `https://<インスタンスID>.<リージョン>.secrets-manager.appdomain.cloud/swagger-ui/` からアクセス可能です。
+
+シークレット取得APIは `` エンドポイントです。
+このエンドポイントに先ほど確認したUUIDを渡すことで、Secret Managerに保存されたAPIキーを取り出します。
+実行すると以下のようなJSONレスポンスにAPIキー `api_key` が含まれています。
+
+```json
+{
+  "metadata": {
+    "collection_type": "application/vnd.ibm.secrets-manager.secret+json",
+    "collection_total": 1
+  },
+  "resources": [
+    "access_groups": ["AccessGroupId-**********"],
+    "api_key": "z4a-*******************",
+    "creation_date": "2020-12-07T11:00:00Z",
+    "state_description": "Active",
+    "ttl": 600
+  ]
+}
+```
+
+取り出したAPIキーからIBM Cloudをリソース操作するためにアクセストークンを発行します。
+
+```bash
+$ IAM_TOKEN=$(curl -k -X POST \
+  --header "Content-Type: application/x-www-form-urlencoded" \
+  --header "Accept: application/json" \
+  --data-urlencode "grant_type=urn:ibm:params:oauth:grant-type:apikey" \
+  --data-urlencode "apikey=$IAM_API_KEY" \
+ "https://iam.cloud.ibm.com/identity/token" | jq -r '.access_token')
+```
+
+最後にアカウントのIDと[IBM Cloud Usage Reports API](https://cloud.ibm.com/apidocs/metering-reporting)を使用して使用量を取得します。
+
+```bash
+$ ACCOUNT_ID=$(ic account show --output json | jq -r '.account_id')
+$ curl -H "Authorization: $IAM_API_TOKEN" -H "Accept: application/json" "https://billing.cloud.ibm.com/v4/accounts/$ACCOUNT_ID/summary/2020-11" | jq .
+
+{
+  "account_id": $ACCOUNT_ID,
+  "month": "2020-11-30T23:59:59.999Z",
+  "resources": {
+    "billable_cost": 0,
+    "non_billable_cost": 0
+  },
+  ...
+}
+```
+
+無事に発行したAPIキーを使用してリソースを操作できるようになりました。
+
+## 参考
+
+* [APIキーからIBM Cloud IAMトークンを発行](https://cloud.ibm.com/apidocs/secrets-manager#authentication)
+* [IBM Cloud Usage Reports API](https://cloud.ibm.com/apidocs/metering-reporting)
