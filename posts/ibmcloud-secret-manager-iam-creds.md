@@ -3,7 +3,7 @@
 この投稿は[IBM Cloud Advent Calendar 2020](https://qiita.com/advent-calendar/2020/ibmcloud)の8日目の記事です。
 
 IBM CloudではユーザーまたはサービスIDに紐づくAPIキーを発行・利用することでリソース操作が可能になります。
-しかしユーザーやサービスIDが増えてくると、発行したどのAPIキーの権限や有効性、使用の有無の管理が面倒になります。管理を怠った結果、強力な権限を持ったAPIキーがGitリポジトリにコミットされて公開されてしまったら、リソースを削除されてサービス停止を招きかねません。
+しかしユーザーやサービスIDが増えてくると、発行したAPIキーの権限や有効性、使用の有無の管理が面倒になります。管理を怠った結果、強力な権限を持ったAPIキーがGitリポジトリにコミットされて公開されてしまったら、リソースを削除されてサービス停止を招きかねません。
 
 そこでIBM Cloud Secret Managerを使用してAPIキーを有効期限つきで発行・一元管理し、APIキーを悪用されないようにしてみます。
 
@@ -150,7 +150,8 @@ $ IAM_TOKEN=$(curl -k -X POST \
  "https://iam.cloud.ibm.com/identity/token" | jq -r '.access_token')
 ```
 
-最後にアカウントのIDと[IBM Cloud Usage Reports API](https://cloud.ibm.com/apidocs/metering-reporting)を使用して使用量を取得します。
+最後にアカウントのIDと[IBM Cloud Usage Reports API](https://cloud.ibm.com/apidocs/metering-reporting)を使用して2020年11月の使用量を取得します。
+以下のようなレスポンスが取得できました。
 
 ```bash
 $ ACCOUNT_ID=$(ic account show --output json | jq -r '.account_id')
@@ -167,6 +168,7 @@ $ curl -H "Authorization: $IAM_API_TOKEN" -H "Accept: application/json" "https:/
 }
 ```
 
+私のアカウントはライトアカウントのため使用量は0で表示されています。
 無事に発行したAPIキーを使用してリソースを操作できるようになりました。
 
 ## 参考
