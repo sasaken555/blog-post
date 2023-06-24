@@ -12,7 +12,7 @@ OpenShift CLI : 4.8.40
 
 通常のマニフェスト適用と同様に `apply` サブコマンドにKustomize用のフラグ `--kustomize` または `-k`をつければ良いです。この方法ではKustomize形式のマニフェストから素のマニフェストをビルドと適用が同時に実行されます。
 
-以下のように `oc apply` の引数に上記フラグとエントリーポイントの kustomization.yaml が入ったディレクトリを指定します。
+以下のように `oc apply` の引数に上記フラグとエントリポイントの kustomization.yaml が入ったディレクトリを指定します。
 
 ```bash
 oc apply -k /path/to/kustomization/target
@@ -23,7 +23,7 @@ oc apply -k /path/to/kustomization/target
 
 ## Kustomizeマニフェストのビルドだけする
 
-CLI組み込みの `kustomize` サブコマンドでKustomize形式のマニフェストから素のマニフェストをビルドして標準出力に吐き出します。CLIドキュメントを見る限り、4.8系から使えるようになったサブコマンドのようです。(4.7系以前のドキュメントには記載がなかった)
+CLI組込み `kustomize` サブコマンドでKustomize形式のマニフェストから素のマニフェストをビルドして標準出力に吐き出します。CLIドキュメントを見る限り、4.8系から使えるようになったサブコマンドのようです。(4.7系以前のドキュメントには記載がなかった)
 
 この方法ではkustomizeのバイナリがなくても使えます。また、OpenShiftクラスタへの認証も不要でローカルに閉じて利用できます。あくまでKustomization形式のマニフェストのビルドだけ実行するので、別途 `apply` サブコマンド等で適用する必要があります。
 

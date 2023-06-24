@@ -6,7 +6,7 @@
 [https://ponzmild.hatenablog.com/entry/2021/11/16/205936:embed:cite]
 
 使い始めるとやりたいことは増えてくるもので、実はここ最近は週1でクラスタを再構築しています。
-多くの原因はストレージ(Rook/Ceph, Longhorn)やネットワーク(NGINX Ingress, MetalLB)に関する設定なので、下手にいじるより作り直しで対応しています。
+多くの原因はストレージ(Rook/Ceph, Longhorn)やネットワーク(nginx Ingress, MetalLB)に関する設定ですので、下手にいじるより作り直しで対応しています。
 
 しかし、構築当初からクラスタのNode VMだけは手作業で構築していました。そうなると毎回手作業の構築だと隙間時間ではできない場面が出てきます。もっとカジュアルに作って壊すために、Ubuntuのautoinstallを使ってVM構築を自動化するできないか検証しました。
 
@@ -19,7 +19,7 @@ ISOから起動した時に出てくるオレンジ帯のTUIでポチポチし�
 autoinstallはUbuntu Serverに設定ファイルを渡すことでセットアップを自動化するしくみです。
 設定ファイルは[cloud-init](https://cloudinit.readthedocs.io/en/latest/index.html)を拡張した形式で記述します。
 
-[https://ubuntu.com/server/docs/install/autoinstall:embed:cite]
+[https://Ubuntu.com/server/docs/install/autoinstall:embed:cite]
 
 
 ## autoinstallの設定ファイルを書いてみる
@@ -95,7 +95,7 @@ $ hdiutil makehybrid -o $VM_HOST_NAME.iso \
 
 一番影響が大きかったのはVMごとに手を動かす必要がないので、並列で構築できるようになったことです。VMごとの構築作業短縮と合わせて効果は絶大でした。
 
-また、設定値を全てファイルに記載しているので、設定値を変更するときは直接SSHするのではなく、ファイルの中身を変えてあげれば良いという安心感があります。
+また、設定値をすべてファイルに記載しているので、設定値を変更するときは直接SSHするのではなく、ファイルの中身を変えてあげれば良いという安心感があります。
 
 
 ## 参考記事
